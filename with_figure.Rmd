@@ -1,6 +1,8 @@
 ---
 title: "Paneled Bubble chart"
-output: github_document
+author: "Sheng Pei Wang"
+date: "3/6/2020"
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -34,7 +36,60 @@ All the graphical components are written in D3. If you want to customize the fig
 
 ## Example:
 
-![paneled bubble chart example](./bubbles.png)
+```{r data, echo = FALSE}
+# read in the data
+dat = read.csv("feature_importance.csv")
+
+# scale the columns such that the relative importance can be compared
+# and add font size, color, lable and alpha columns
+data_feature =  dat %>% 
+  mutate(size = importance/max(importance),
+         single_model = single_importance/max(single_importance),
+         reduced_model = importance_r/max(importance_r, na.rm=T),
+         font_size = 12) %>% 
+  arrange(desc(size)) %>% 
+  mutate(color = c("#e41a1c", "#377eb8", "#4daf4a", "#984ea3",
+                   "#ff7f00", "#ffff33", "#a65628", "#f781bf", "#999999"), 
+         lable = " ",
+         alpha = 1)
+  
+
+# set NAs to be zero
+data_feature[is.na(data_feature)] <- 0
+
+# specify the legend information:
+
+data_legend <-
+  data.frame(id = 1:9,
+             X = c(1,2,3,4,5,1,2,3,4), 
+             Y = c(1,1,1,1,1,2,2,2,2),
+             color = data_feature$color,
+             Lable = data_feature$feature)
+
+```
+
+```{r figure, echo = FALSE}
+r2d3(data = list(data = data_feature,
+                 data2 = data_feature %>% rename(full_model = size, size = single_model),
+                 data3 = data_feature %>% rename(full_model = size, size = reduced_model),
+                 data4 = data_feature,
+                 legend = data_legend,
+                 panel_number = 3, 
+                 key = "feature",
+                 radius = "size",
+                 color = "color",
+                 alpha = "alpha",
+                 lable_name = "lable",
+                 font_size = "font_size",
+                 font_size_title = 30,
+                 font = "Times New Roman",
+                 font_color = "#000000", 
+                 title = "Comparing feature importance measures",
+                 legend_bubble_size = 30,
+                 legend_spacing = 30), 
+     script = "bubbles.js",
+     viewer = "internal")
+```
 
 Here the three panels compare different ways to understand relative importance of nine biopsy output in predicting breast cancer: feature importance from a logistic regression model with all nine features, model performance with each feature alone, and feature importance of a reduced model after backward elimination. As you can see, the first and third panel are essentially the same. But the middle panel shows that each feature has high predictive power alone.
 I did the analysis in Python to practice my data science skills. Please check the Jupyter Notebook for more information about the data and analysis.
