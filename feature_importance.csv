@@ -1,0 +1,10 @@
+,feature,importance,single_importance,importance_r
+0,Single Epithelial <br>Cell Size,0.01652664,0.875609756,
+1,Uniformity of <br>Cell Shape,0.071666959,0.924390244,
+2,Normal <br>Nucleoli,0.214675506,0.887804878,0.225945781
+3,Bland <br>Chromatin,0.234437915,0.892682927,0.242543383
+4,Marginal <br>Adhesion,0.360220542,0.880487805,0.363318348
+5,Clump <br>Thickness,0.435399267,0.804878049,0.448167653
+6,Mitoses,0.453717684,0.746341463,0.450019798
+7,Uniformity of <br>Cell Size,0.557233247,0.936585366,0.620009735
+8,Bare <br>Nuclei,0.55938422,0.917073171,0.564159328
